@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
@@ -88,40 +89,39 @@ public class ChoosePic extends AppCompatActivity {
         }
 
         if(requestCode == PICK_FROM_ALBUM) {
-            if (resultCode == RESULT_OK) {
-                Uri photoUri = data.getData();
-                Cursor cursor = null;
+            Uri photoUri = data.getData();
+            Log.e("Tag","사진경로:"+photoUri);
+            Cursor cursor = null;
 
-                try {
-                    /*
-                     *  Uri 스키마를
-                     *  content:/// 에서 file:/// 로  변경한다.
-                     */
-                    String[] proj = {MediaStore.Images.Media.DATA};
+            try {
+                /*
+                 *  Uri 스키마를
+                 *  content:/// 에서 file:/// 로  변경한다.
+                 */
+                String[] proj = {MediaStore.Images.Media.DATA};
 
-                    assert photoUri != null;
-                    cursor = getContentResolver().query(photoUri, proj, null, null, null);
+                assert photoUri != null;
+                cursor = getContentResolver().query(photoUri, proj, null, null, null);
 
-                    assert cursor != null;
-                    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                assert cursor != null;
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 
-                    cursor.moveToFirst();
+                cursor.moveToFirst();
 
-                    tempFile = new File(cursor.getString(column_index));
+                tempFile = new File(cursor.getString(column_index));
 
-                } finally {
-                    if (cursor != null) {
-                        cursor.close();
-                    }
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
                 }
-
-                sendPic();
-
-            } else if (requestCode == PICK_FROM_CAMERA) {
-
-                sendPic();
-
             }
+
+            sendPic();
+
+        } else if (requestCode == PICK_FROM_CAMERA) {
+
+            sendPic();
+
         }
     }
 
@@ -168,14 +168,16 @@ public class ChoosePic extends AppCompatActivity {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
 
                 Uri photoUri = FileProvider.getUriForFile(this,
-                        "com.leenak0.project.autoblur.provider", tempFile);
+                        "Autoblur", tempFile);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                Log.e("Tag","누가사진경로:"+photoUri);
                 startActivityForResult(intent, PICK_FROM_CAMERA);
 
             } else {
 
                 Uri photoUri = Uri.fromFile(tempFile);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                Log.e("Tag","이전사진경로:"+photoUri);
                 startActivityForResult(intent, PICK_FROM_CAMERA);
 
             }
@@ -200,23 +202,24 @@ public class ChoosePic extends AppCompatActivity {
 
     private void sendPic(){
 
-        BitmapFactory.Options options = new BitmapFactory.Options();
+        BitmapFactory.Options options = new BitmapFactory.Options(); //해상도 줄이는거
         Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream(); //배열로 넘기는거
         Bitmap bitmap = originalBm;
 
         float scale = (float) (1024/(float)bitmap.getWidth());
         int image_w = (int) (bitmap.getWidth() * scale);
         int image_h = (int) (bitmap.getHeight() * scale);
         Bitmap resize = Bitmap.createScaledBitmap(bitmap, image_w, image_h, true);
-        resize.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        resize.compress(Bitmap.CompressFormat.JPEG, 40, stream);//사이즈 조절하는부분?
         byte[] byteArray = stream.toByteArray();
 
         Intent intent = new Intent(ChoosePic.this, SelectPic.class);
         intent.putExtra("selectPic", byteArray);
 
         startActivity(intent);
+        tempFile = null;
     }
 
 }

@@ -27,19 +27,19 @@
 
         <ImageButton
             android:id="@+id/btn_camera"
-            android:layout_width="150dp"
-            android:layout_height="58dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="16dp"
             android:layout_marginRight="68dp"
             android:background="@drawable/camera_select" />
 
         <ImageButton
             android:id="@+id/btn_gallery"
-            android:layout_width="150dp"
-            android:layout_height="58dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="16dp"
             android:layout_marginLeft="68dp"
             android:background="@drawable/gallery_select" />
     </FrameLayout>

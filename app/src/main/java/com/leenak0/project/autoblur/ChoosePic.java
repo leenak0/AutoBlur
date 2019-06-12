@@ -7,7 +7,9 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.nfc.Tag;
 import android.os.Environment;
@@ -116,11 +118,19 @@ public class ChoosePic extends AppCompatActivity {
                 }
             }
 
-            sendPic();
+            try {
+                sendPic();
+            } catch (IOException e) {
+                Log.e("TAG","sendpic ei 오류");
+            }
 
         } else if (requestCode == PICK_FROM_CAMERA) {
 
-            sendPic();
+            try {
+                sendPic();
+            } catch (IOException e) {
+                Log.e("TAG","sendpic ei 오류");
+            }
 
         }
     }
@@ -200,7 +210,12 @@ public class ChoosePic extends AppCompatActivity {
         return image;
     }
 
-    private void sendPic(){
+    private void sendPic() throws IOException {
+
+        ExifInterface ei = new ExifInterface(tempFile.getAbsolutePath());
+        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_UNDEFINED);
+        Bitmap rotatedBitmap = null;
 
         BitmapFactory.Options options = new BitmapFactory.Options(); //해상도 줄이는거
         Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
@@ -208,10 +223,29 @@ public class ChoosePic extends AppCompatActivity {
         ByteArrayOutputStream stream = new ByteArrayOutputStream(); //배열로 넘기는거
         Bitmap bitmap = originalBm;
 
-        float scale = (float) (1024/(float)bitmap.getWidth());
-        int image_w = (int) (bitmap.getWidth() * scale);
-        int image_h = (int) (bitmap.getHeight() * scale);
-        Bitmap resize = Bitmap.createScaledBitmap(bitmap, image_w, image_h, true);
+        switch(orientation) {
+
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                rotatedBitmap = rotateImage(bitmap, 90);
+                break;
+
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                rotatedBitmap = rotateImage(bitmap, 180);
+                break;
+
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                rotatedBitmap = rotateImage(bitmap, 270);
+                break;
+
+            case ExifInterface.ORIENTATION_NORMAL:
+            default:
+                rotatedBitmap = bitmap;
+        }
+
+        float scale = (float) (1024/(float)rotatedBitmap.getWidth());
+        int image_w = (int) (rotatedBitmap.getWidth() * scale);
+        int image_h = (int) (rotatedBitmap.getHeight() * scale);
+        Bitmap resize = Bitmap.createScaledBitmap(rotatedBitmap, image_w, image_h, true);
         resize.compress(Bitmap.CompressFormat.JPEG, 40, stream);//사이즈 조절하는부분?
         byte[] byteArray = stream.toByteArray();
 
@@ -220,6 +254,12 @@ public class ChoosePic extends AppCompatActivity {
 
         startActivity(intent);
         tempFile = null;
+    }
+
+    public static Bitmap rotateImage(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
 
 }

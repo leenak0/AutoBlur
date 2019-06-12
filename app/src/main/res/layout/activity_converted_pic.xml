@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/converted_picture_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"/>
+
+    <ImageView
+        android:id="@+id/delete_answer_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:visibility="invisible"
+        android:background="@drawable/bg_deleteanswer"/>
+
+    <ImageView
+        android:id="@+id/img_pic_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/top_pi"/>
+
+    <ImageView
+        android:id="@+id/img_pic_none"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="523dp"
+        android:background="@drawable/button_none"
+        android:layout_gravity="center_horizontal"/>
+
+    <ImageButton
+        android:id="@+id/btn_save"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="523dp"
+        android:layout_marginRight="60dp"
+        android:background="@drawable/save" />
+
+    <ImageButton
+        android:id="@+id/btn_share"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="523dp"
+        android:layout_marginLeft="60dp"
+        android:background="@drawable/share" />
+
+    <ImageButton
+        android:id="@+id/btn_no"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="523dp"
+        android:layout_marginRight="60dp"
+        android:background="@drawable/no" />
+
+    <ImageButton
+        android:id="@+id/btn_yes"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="523dp"
+        android:layout_marginLeft="60dp"
+        android:background="@drawable/delete" />
+
+    <ImageButton
+        android:id="@+id/btn_modify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="523dp"
+        android:layout_marginRight="80dp"
+        android:background="@drawable/pen_s" />
+
+    <ImageButton
+        android:id="@+id/btn_finish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="523dp"
+        android:background="@drawable/check_s" />
+
+    <ImageButton
+        android:id="@+id/btn_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="523dp"
+        android:layout_marginLeft="80dp"
+        android:background="@drawable/delete_s" />
+
+</FrameLayout>

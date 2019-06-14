@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "444193377241",
+    "firebase_url": "https://autoblur123.firebaseio.com",
+    "project_id": "autoblur123",
+    "storage_bucket": "autoblur123.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:444193377241:android:b005038e8e81297d",
+        "android_client_info": {
+          "package_name": "com.leenak0.project.autoblur"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "444193377241-oocmnk0qq74srg812o3j3iqtfjjratsc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.leenak0.project.autoblur",
+            "certificate_hash": "de2c7bb48f98e0c41aa80ce6c051f6edcc76cf81"
+          }
+        },
+        {
+          "client_id": "444193377241-kneoi76v0qsd21f7feo55k6c185k57l5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjjAgXtWwrKGcj1zGk-1rnmdHHGzyFkBY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "444193377241-kneoi76v0qsd21f7feo55k6c185k57l5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

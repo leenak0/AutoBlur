@@ -1,15 +1,42 @@
 package com.leenak0.project.autoblur;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class SelectPic extends AppCompatActivity {
+
+    Bitmap bitmap;
+    File uploadFile;
+    String imageFileName;
+    Uri photoUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +49,7 @@ public class SelectPic extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         final byte[] byteArray=getIntent().getByteArrayExtra("selectPic");
-        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
+        bitmap = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
 
         imageView.setImageBitmap(bitmap);
 
@@ -30,9 +57,8 @@ public class SelectPic extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Intent send = new Intent(SelectPic.this,ConvertedPic.class);
-                send.putExtra("convertPic", byteArray);
-                startActivity(send);
+                deleteFile();
+                uploadFile();
             }
         });
 
@@ -45,4 +71,108 @@ public class SelectPic extends AppCompatActivity {
             }
         });
     }
+    public File SaveBitmapToFileCache(Bitmap bitmap) {
+
+        imageFileName = "AutoBlur_before";
+
+        File storageDir = new File(Environment.getExternalStorageDirectory() + "/AutoBlur/");
+        if (!storageDir.exists()) storageDir.mkdirs();
+
+        File fileCacheItem = new File(storageDir + imageFileName);
+        OutputStream out = null;
+
+        try {
+            fileCacheItem.createNewFile();
+            out = new FileOutputStream(fileCacheItem);
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return fileCacheItem;
+    }
+    //delete file
+    private void deleteFile(){
+        //storage
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        // Create a storage reference from our app
+        StorageReference storageRef = storage.getReference();
+        // Create a reference to the file to delete
+        StorageReference desertRef = storageRef.child("images/AutoBlur_before");
+        // Delete the file
+        desertRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                //Toast.makeText(getApplicationContext(), "삭제 완료!", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                //Toast.makeText(getApplicationContext(), "삭제 실패!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    //upload the file
+    private void uploadFile() {
+        //bitmap to file
+        uploadFile = SaveBitmapToFileCache(bitmap);
+        //업로드할 파일이 있으면 수행
+        if (uploadFile != null) {
+            //file to uri
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                photoUri = FileProvider.getUriForFile(this, "Autoblur", uploadFile);
+            } else {
+                photoUri = Uri.fromFile(uploadFile);
+            }
+            //업로드 진행 Dialog 보이기
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("업로드중...");
+            progressDialog.show();
+
+            //storage
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+
+            //storage 주소와 폴더 파일명을 지정해 준다.
+            StorageReference storageRef = storage.getReferenceFromUrl("gs://autoblur123.appspot.com").child("images/" + imageFileName);
+            //올라가거라...
+            storageRef.putFile(photoUri)
+                    //성공시
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss(); //업로드 진행 Dialog 상자 닫기
+                            //Toast.makeText(getApplicationContext(), "업로드 완료!", Toast.LENGTH_SHORT).show();
+                            Intent send = new Intent(SelectPic.this,ConvertedPic.class);
+//                          send.putExtra("convertPic", byteArray);
+                            startActivity(send);
+                        }
+                    })
+                    //실패시
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            //Toast.makeText(getApplicationContext(), "업로드 실패!", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    //진행중
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            @SuppressWarnings("VisibleForTests") //이걸 넣어 줘야 아랫줄에 에러가 사라진다. 넌 누구냐?
+                                    double progress = (100 * taskSnapshot.getBytesTransferred()) /  taskSnapshot.getTotalByteCount();
+                            //dialog에 진행률을 퍼센트로 출력해 준다
+                            progressDialog.setMessage("Uploaded " + ((int) progress) + "% ...");
+                        }
+                    });
+        }
+    }
+
 }

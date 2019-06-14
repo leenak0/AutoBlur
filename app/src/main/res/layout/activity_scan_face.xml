@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <SurfaceView
+        android:id="@+id/cameraView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/explain_01"/>
+
+    <ImageButton
+        android:id="@+id/btn_start_scan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="523dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/startscan" />
+
+    <ImageView
+        android:id="@+id/scan_face_none"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="523dp"
+        android:background="@drawable/button_none"
+        android:visibility="invisible"
+        android:layout_gravity="center_horizontal"/>
+
+    <ImageButton
+        android:id="@+id/btn_go_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="523dp"
+        android:layout_marginRight="60dp"
+        android:visibility="invisible"
+        android:background="@drawable/check" />
+
+    <ImageButton
+        android:id="@+id/btn_cancel_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="523dp"
+        android:layout_marginLeft="60dp"
+        android:visibility="invisible"
+        android:background="@drawable/delete" />
+</FrameLayout>

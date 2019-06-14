@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class ConvertedPic extends AppCompatActivity {
 
@@ -43,11 +52,35 @@ public class ConvertedPic extends AppCompatActivity {
         btn_finish = (ImageButton)findViewById(R.id.btn_finish);
         btn_delete = (ImageButton)findViewById(R.id.btn_delete);
 
-        Bundle extras = getIntent().getExtras();
-        final byte[] byteArray=getIntent().getByteArrayExtra("convertPic");
-        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
+//        Bundle extras = getIntent().getExtras();
+//        final byte[] byteArray=getIntent().getByteArrayExtra("convertPic");
+//        Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
 
-        img_pic.setImageBitmap(bitmap);
+        //사진 firebase에서 가져오기
+        //storage
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        // Create a storage reference from our app
+        StorageReference storageRef = storage.getReference();
+        // Create a reference to the file to delete
+        StorageReference desertRef = storageRef.child("images/AutoBlur_before");
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        desertRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                //Toast.makeText(getApplicationContext(), "다운로드 완료!", Toast.LENGTH_SHORT).show();
+                img_pic.setImageBitmap(bitmap);
+                //Toast.makeText(getApplicationContext(), "이미지 설정 완료!", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                //Toast.makeText(getApplicationContext(), "다운로드 실패!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
 
         btn_finish.setOnClickListener(new View.OnClickListener(){ //체크버튼 눌렀을때
 

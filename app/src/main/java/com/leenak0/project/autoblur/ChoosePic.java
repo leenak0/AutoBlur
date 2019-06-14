@@ -198,7 +198,7 @@ public class ChoosePic extends AppCompatActivity {
 
         // 이미지 파일 이름 ( blackJin_{시간}_ )
         String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
-        String imageFileName = "AutoBlur_" + timeStamp + "_";
+        String imageFileName = "AutoBlur_" + timeStamp;
 
         // 이미지가 저장될 폴더 이름 ( blackJin )
         File storageDir = new File(Environment.getExternalStorageDirectory() + "/AutoBlur/");

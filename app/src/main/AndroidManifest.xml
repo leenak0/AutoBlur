@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ConvertedPic"></activity>
+        <activity android:name=".ScanFace"></activity>
+        <activity android:name=".CheckProfile" />
+        <activity android:name=".ConvertedPic" />
         <activity android:name=".ChoosePic" />
         <activity android:name=".SelectPic" />
         <activity android:name=".FaceRegister" />

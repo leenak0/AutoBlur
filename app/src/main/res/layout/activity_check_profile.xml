@@ -17,34 +17,37 @@
         app:srcCompat="@drawable/top_fr" />
 
     <ImageView
-        android:id="@+id/img_face_box"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:srcCompat="@drawable/bigbox_noface" />
-
-    <ImageButton
-        android:id="@+id/btn_register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="523dp"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/register" />
-
-    <ImageView
         android:id="@+id/img_face_pic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="invisible"
         app:srcCompat="@drawable/bigbox_none" />
 
+    <TextView
+        android:id="@+id/txt_name"
+        android:text="Name"
+        android:textColor="#4374D9"
+        android:textSize="18sp"
+        android:layout_marginTop="470dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <ImageButton
-        android:id="@+id/btn_id_setting"
+        android:id="@+id/btn_change_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="523dp"
         android:layout_gravity="center_horizontal"
-        android:visibility="invisible"
-        android:background="@drawable/idsetting" />
+        android:layout_marginTop="523dp"
+        android:layout_marginRight="60dp"
+        android:background="@drawable/pen" />
+
+    <ImageButton
+        android:id="@+id/btn_delete_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="523dp"
+        android:layout_marginLeft="60dp"
+        android:background="@drawable/delete" />
 </FrameLayout>

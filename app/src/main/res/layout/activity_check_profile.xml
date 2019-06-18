@@ -9,7 +9,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/bg_fr"/>
+        android:src="@drawable/bg_button_1"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -18,10 +18,9 @@
 
     <ImageView
         android:id="@+id/img_face_pic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:srcCompat="@drawable/bigbox_none" />
+        android:layout_width="247dp"
+        android:layout_height="248dp"
+        android:layout_gravity="center" />
 
     <TextView
         android:id="@+id/txt_name"
@@ -44,6 +43,34 @@
 
     <ImageButton
         android:id="@+id/btn_delete_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="523dp"
+        android:layout_marginLeft="60dp"
+        android:background="@drawable/delete" />
+
+    <ImageView
+        android:id="@+id/profile_delete_answer_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:visibility="invisible"
+        android:background="@drawable/bg_deleteanswer"/>
+
+    <ImageButton
+        android:id="@+id/btn_delete_profile_no"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="523dp"
+        android:layout_marginRight="60dp"
+        android:background="@drawable/no" />
+
+    <ImageButton
+        android:id="@+id/btn_delete_profile_yes"
+        android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

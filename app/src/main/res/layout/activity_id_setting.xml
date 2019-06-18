@@ -9,7 +9,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/bg_fr"/>
+        android:src="@drawable/bg_button_1"/>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -17,17 +17,17 @@
         app:srcCompat="@drawable/top_fr" />
 
     <ImageView
-        android:id="@+id/img_face_box"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:srcCompat="@drawable/bigbox_noface" />
+        android:id="@+id/img_face_pic"
+        android:layout_width="247dp"
+        android:layout_height="248dp"
+        android:layout_gravity="center" />
 
-    <ImageButton
-        android:id="@+id/btn_register"
+    <EditText
+        android:id="@+id/edit_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="523dp"
+        android:gravity="center"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/register" />
+        android:background="@drawable/button_none" />
 </FrameLayout>

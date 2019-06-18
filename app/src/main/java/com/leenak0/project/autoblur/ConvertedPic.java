@@ -1,6 +1,7 @@
 package com.leenak0.project.autoblur;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;

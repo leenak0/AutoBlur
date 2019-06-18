@@ -1,6 +1,7 @@
 package com.leenak0.project.autoblur;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+
+    String name="";
 
     // Used to load the 'native-lib' library on application startup.
     static {
@@ -20,13 +23,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        name=pref.getString("name", "");
+
         ImageButton btn_main_face = (ImageButton)findViewById(R.id.btn_main_face);
         btn_main_face.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
-                Intent face_register = new Intent(getApplicationContext(),FaceRegister.class);
-                startActivity(face_register);
+                if(name==""){
+                    Intent face_register = new Intent(MainActivity.this,FaceRegister.class);
+                    startActivity(face_register);
+                }else{
+                    Intent check_profile = new Intent(MainActivity.this,CheckProfile.class);
+                    startActivity(check_profile);
+                }
             }
         });
 

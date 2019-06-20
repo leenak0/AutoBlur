@@ -5,10 +5,10 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/converted_picture_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"/>
+        android:id="@+id/img_edit_pic"
+        android:layout_width="247dp"
+        android:layout_height="248dp"
+        android:layout_gravity="center" />
 
     <ImageView
         android:id="@+id/delete_answer_view"
@@ -31,6 +31,26 @@
         android:layout_marginTop="523dp"
         android:background="@drawable/button_none"
         android:layout_gravity="center_horizontal"/>
+
+    <ImageButton
+        android:id="@+id/btn_mosaic"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="523dp"
+        android:layout_marginRight="60dp"
+        android:background="@drawable/mosaic" />
+
+    <ImageButton
+        android:id="@+id/btn_gaussian"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="523dp"
+        android:layout_marginLeft="60dp"
+        android:background="@drawable/gaussian" />
 
     <ImageButton
         android:id="@+id/btn_save"

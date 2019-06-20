@@ -1,6 +1,5 @@
 package com.leenak0.project.autoblur;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,52 +8,35 @@ import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.net.Uri;
 import android.os.Environment;
-import android.os.Handler;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
 import android.app.Activity;
 import android.hardware.Camera;
-import android.hardware.camera2.CameraDevice;
-import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class ScanFace extends Activity implements SurfaceHolder.Callback {
 
-    private CameraDevice camera;
     private SurfaceView mCameraView;
     private SurfaceHolder mCameraHolder;
     private Camera mCamera;
-    private Button mStart;
-    private boolean recording = false;
-    private MediaRecorder mediaRecorder;
     ImageButton startscan;
     ImageView arrow;
     ImageView scantop;
@@ -64,11 +46,9 @@ public class ScanFace extends Activity implements SurfaceHolder.Callback {
     String imageFileName;
     Uri photoUri;
     int i;
-    private Timer timer;
-    int sleep=50;
-    int delay=1000;
     int countFrame=0;
     int finishscan=0;
+    String firebaseurl="gs://autoblur123.appspot.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,14 +100,10 @@ public class ScanFace extends Activity implements SurfaceHolder.Callback {
                         m.setRotate((float)270, oribitmap.getWidth(), oribitmap.getHeight());
                         scanbitmap= Bitmap.createBitmap(oribitmap, 0, 0, oribitmap.getWidth(), oribitmap.getHeight(), m, true);
                         Log.e("TAG","프레임: "+countFrame);
-                        if(finishscan==3){ //업로드 끝나면
+                        if(finishscan==20){ //업로드 끝나면
                             arrow.setVisibility(View.INVISIBLE);
                             scantop.setVisibility(View.INVISIBLE);
                             btn_stop.setVisibility(View.VISIBLE);
-//                            Intent intent=new Intent(ScanFace.this, SelectProfile.class);
-//                            startActivity(intent);
-//                            setResult(1);
-//                            finish();
                         }
                         if (countFrame == 5) {
                             Log.e("TAG", i + ": " + scanbitmap);
@@ -141,81 +117,75 @@ public class ScanFace extends Activity implements SurfaceHolder.Callback {
                             Log.e("TAG", i + ": " + scanbitmap);
                             uploadFile(3);
                         }
-//                        if (countFrame == 20) {
-//                            Log.e("TAG", i + ": " + scanbitmap);
-//                            uploadFile(4);
-//                        }
-//                        if (countFrame == 25) {
-//                            Log.e("TAG", i + ": " + scanbitmap);
-//                            uploadFile(5);
-//                        }
-//                        if (countFrame == 30) {
-//                            Log.e("TAG", i + ": " + scanbitmap);
-//                            uploadFile(6);
-//                        }
-//                        if (countFrame == 35) {
-//                            Log.e("TAG", i + ": " + scanbitmap);
-//                            uploadFile(7);
-//                        }
-//                        if (countFrame == 40) {
-//                            Log.e("TAG", i + ": " + scanbitmap);
-//                            uploadFile(8);
-//                        }
-//                        if (countFrame == 45) {
-//                            Log.e("TAG", i + ": " + scanbitmap);
-//                            uploadFile(9);
-//                        }
-//                        if (countFrame == 50) {
-//                            Log.e("TAG", i + ": " + scanbitmap);
-//                            uploadFile(10);
-//                            arrow.setScaleX(-1);
-//                        }
-//                        if (countFrame == 55) {
-//                            Log.e("TAG", i + ": " + scanbitmap);
-//                            uploadFile(11);
-//                        }
-//                        if (countFrame == 60) {
-//                            Log.e("TAG", i + ": " + scanbitmap);
-//                            uploadFile(12);
-//                        }
-//                        if (countFrame == 65) {
-//                            Log.e("TAG", i + ": " + scanbitmap);
-//                            uploadFile(13);
-//                        }
-//                        if (countFrame == 70) {
-//                            Log.e("TAG", i + ": " + scanbitmap);
-//                            uploadFile(14);
-//                        }
-//                        if (countFrame == 75) {
-//                            Log.e("TAG", i + ": " + scanbitmap);
-//                            uploadFile(15);
-//                        }
-//                        if (countFrame == 80) {
-//                            Log.e("TAG", i + ": " + scanbitmap);
-//                            uploadFile(16);
-//                        }
-//                        if (countFrame == 85) {
-//                            Log.e("TAG", i + ": " + scanbitmap);
-//                            uploadFile(17);
-//                        }
-//                        if (countFrame == 90) {
-//                            Log.e("TAG", i + ": " + scanbitmap);
-//                            uploadFile(18);
-//                        }
-//                        if (countFrame == 95) {
-//                            Log.e("TAG", i + ": " + scanbitmap);
-//                            uploadFile(19);
-//                        }
-//                        if (countFrame == 100) {
-//                            Log.e("TAG", i + ": " + scanbitmap);
-//                            uploadFile(20);
-//                            arrow.setVisibility(View.INVISIBLE);
-//                            scantop.setVisibility(View.INVISIBLE);
-//                            scanupload.setVisibility(View.VISIBLE);
-//                            Intent intent=new Intent(ScanFace.this, SelectProfile.class);
-//                            startActivity(intent);
-//                            finish();
-//                        }
+                        if (countFrame == 20) {
+                            Log.e("TAG", i + ": " + scanbitmap);
+                            uploadFile(4);
+                        }
+                        if (countFrame == 25) {
+                            Log.e("TAG", i + ": " + scanbitmap);
+                            uploadFile(5);
+                        }
+                        if (countFrame == 30) {
+                            Log.e("TAG", i + ": " + scanbitmap);
+                            uploadFile(6);
+                        }
+                        if (countFrame == 35) {
+                            Log.e("TAG", i + ": " + scanbitmap);
+                            uploadFile(7);
+                        }
+                        if (countFrame == 40) {
+                            Log.e("TAG", i + ": " + scanbitmap);
+                            uploadFile(8);
+                        }
+                        if (countFrame == 45) {
+                            Log.e("TAG", i + ": " + scanbitmap);
+                            uploadFile(9);
+                        }
+                        if (countFrame == 50) {
+                            Log.e("TAG", i + ": " + scanbitmap);
+                            uploadFile(10);
+                            arrow.setScaleX(-1);
+                        }
+                        if (countFrame == 55) {
+                            Log.e("TAG", i + ": " + scanbitmap);
+                            uploadFile(11);
+                        }
+                        if (countFrame == 60) {
+                            Log.e("TAG", i + ": " + scanbitmap);
+                            uploadFile(12);
+                        }
+                        if (countFrame == 65) {
+                            Log.e("TAG", i + ": " + scanbitmap);
+                            uploadFile(13);
+                        }
+                        if (countFrame == 70) {
+                            Log.e("TAG", i + ": " + scanbitmap);
+                            uploadFile(14);
+                        }
+                        if (countFrame == 75) {
+                            Log.e("TAG", i + ": " + scanbitmap);
+                            uploadFile(15);
+                        }
+                        if (countFrame == 80) {
+                            Log.e("TAG", i + ": " + scanbitmap);
+                            uploadFile(16);
+                        }
+                        if (countFrame == 85) {
+                            Log.e("TAG", i + ": " + scanbitmap);
+                            uploadFile(17);
+                        }
+                        if (countFrame == 90) {
+                            Log.e("TAG", i + ": " + scanbitmap);
+                            uploadFile(18);
+                        }
+                        if (countFrame == 95) {
+                            Log.e("TAG", i + ": " + scanbitmap);
+                            uploadFile(19);
+                        }
+                        if (countFrame == 100) {
+                            Log.e("TAG", i + ": " + scanbitmap);
+                            uploadFile(20);
+                        }
                         countFrame++;
                     }
                 });
@@ -308,7 +278,7 @@ public class ScanFace extends Activity implements SurfaceHolder.Callback {
             FirebaseStorage storage = FirebaseStorage.getInstance();
 
             //storage 주소와 폴더 파일명을 지정해 준다.
-            StorageReference storageRef = storage.getReferenceFromUrl("gs://autoblur123.appspot.com").child("images/" + imageFileName);
+            StorageReference storageRef = storage.getReferenceFromUrl(firebaseurl).child(imageFileName+".jpeg");
             //올라가거라...
             storageRef.putFile(photoUri)
                     //성공시

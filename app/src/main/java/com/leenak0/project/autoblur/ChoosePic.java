@@ -3,19 +3,14 @@ package com.leenak0.project.autoblur;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,10 +18,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class ChoosePic extends AppCompatActivity {
+
     private static final int PICK_FROM_ALBUM=1;
     private static final int PICK_FROM_CAMERA = 2;
     private File tempFile;
@@ -53,13 +47,6 @@ public class ChoosePic extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 takePhoto();
-                /*int permissionCheck = ContextCompat.checkSelfPermission(ChoosePic.this, Manifest.permission.CAMERA);
-                if(permissionCheck== PackageManager.PERMISSION_DENIED){
-                    ActivityCompat.requestPermissions(ChoosePic.this,new String[]{Manifest.permission.CAMERA},0);
-                }else{
-                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(camera,PICK_FROM_CAMERA);
-                }*/
             }
         });
 
@@ -76,9 +63,6 @@ public class ChoosePic extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
 
         if (resultCode != Activity.RESULT_OK) {
-
-            //Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
-
             if(tempFile != null) {
                 if (tempFile.exists()) {
                     if (tempFile.delete()) {
@@ -86,7 +70,6 @@ public class ChoosePic extends AppCompatActivity {
                     }
                 }
             }
-
             return;
         }
 

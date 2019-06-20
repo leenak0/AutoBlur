@@ -9,11 +9,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -28,7 +26,6 @@ public class CheckProfile extends AppCompatActivity {
     ImageView img_pda;
     ImageButton btn_pyes;
     ImageButton btn_pno;
-
     String name=null;
 
     @Override
@@ -54,7 +51,7 @@ public class CheckProfile extends AppCompatActivity {
         // Create a storage reference from our app
         StorageReference storageRef = storage.getReference();
         // Create a reference to the file to delete
-        StorageReference desertRef = storageRef.child("images/AutoBlur_scan_1");
+        StorageReference desertRef = storageRef.child("/AutoBlur_scan_1.jpeg");
 
         final long ONE_MEGABYTE = 1024 * 1024;
         desertRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -77,8 +74,6 @@ public class CheckProfile extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                img_face_pic.setVisibility(View.INVISIBLE);
-                txt_name.setVisibility(View.INVISIBLE);
                 btn_change_name.setVisibility(View.INVISIBLE);
                 btn_delete_profile.setVisibility(View.INVISIBLE);
 
@@ -92,8 +87,6 @@ public class CheckProfile extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                img_face_pic.setVisibility(View.VISIBLE);
-                txt_name.setVisibility(View.VISIBLE);
                 btn_change_name.setVisibility(View.VISIBLE);
                 btn_delete_profile.setVisibility(View.VISIBLE);
 

@@ -179,12 +179,12 @@ public class ChoosePic extends AppCompatActivity {
 
     private File createImageFile() throws IOException {
 
-        // 이미지 파일 이름 ( blackJin_{시간}_ )
+        // 이미지 파일 이름 ( AutoBlur_{시간} )
         String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
         String imageFileName = "AutoBlur_" + timeStamp;
 
-        // 이미지가 저장될 폴더 이름 ( blackJin )
-        File storageDir = new File(Environment.getExternalStorageDirectory() + "/AutoBlur/");
+        // 이미지가 저장될 폴더 이름 ( /storage/emulated/0/DCIM/AutoBlur/ )
+        File storageDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/DCIM/AutoBlur/");
         if (!storageDir.exists()) storageDir.mkdirs();
 
         // 빈 파일 생성

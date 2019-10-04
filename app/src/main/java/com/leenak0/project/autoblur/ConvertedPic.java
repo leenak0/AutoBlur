@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -40,6 +42,7 @@ public class ConvertedPic extends AppCompatActivity {
     ImageButton btn_gaussian;
     Bitmap mosaic;
     Bitmap gaussian;
+    File storageDir;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,15 +192,47 @@ public class ConvertedPic extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                //공유
-                Intent intent = new Intent(android.content.Intent.ACTION_SEND);
-                intent.setType("text/plain");
-                // Set default text message
-                // 카톡, 이메일, MMS 다 이걸로 설정 가능
-                String text = "얼굴인식 자동 모자이크 어플리케이션 AutoBlur"; //보낼문자
-                intent.putExtra(Intent.EXTRA_TEXT, text);
-                Intent chooser = Intent.createChooser(intent, "Share"); //공유창제목
-                startActivity(chooser);
+                View content = findViewById(R.id.img_edit_pic);
+                content.setDrawingCacheEnabled(true);
+                Bitmap bitmap = content.getDrawingCache();
+
+                File root = Environment.getExternalStorageDirectory();
+                File cachePath = new File(root.getAbsolutePath() + "/DCIM/AutoBlur");
+                if (!cachePath.exists()) cachePath.mkdirs();
+                Log.e("TAG","cachePath(share): "+cachePath);
+                try {
+                    FileOutputStream ostream = new FileOutputStream(cachePath+"/AutoBlur_share.jpeg");
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                File sharePath = new File(root.getAbsolutePath() + "/DCIM/AutoBlur/AutoBlur_share.jpeg");
+                Intent share = new Intent(Intent.ACTION_SEND);
+                share.setType("image/*");
+                share.putExtra(Intent.EXTRA_SUBJECT, "AutoBlur");
+                share.putExtra(Intent.EXTRA_TEXT, "얼굴인식 자동 모자이크 어플리케이션 AutoBlur입니다.");
+                share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(sharePath));
+                Log.e("TAG","sharePath: "+sharePath);
+                Log.e("TAG","Uri.fromFile(sharePath): "+Uri.fromFile(sharePath));
+                startActivity(Intent.createChooser(share,"Share via"));
+
+//                Intent share = new Intent(Intent.ACTION_SEND);
+//                share.setType("image/*");
+//                share.putExtra(Intent.EXTRA_SUBJECT, "AutoBlur");
+//                share.putExtra(Intent.EXTRA_TEXT, "얼굴인식 자동 모자이크 어플리케이션 AutoBlur입니다.");
+//                share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(img));
+//                startActivity(Intent.createChooser(share,"Share via"));
+
+//                //텍스트공유
+//                Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+//                intent.setType("text/plain");
+//                // Set default text message
+//                // 카톡, 이메일, MMS 다 이걸로 설정 가능
+//                String text = "얼굴인식 자동 모자이크 어플리케이션 AutoBlur"; //보낼문자
+//                intent.putExtra(Intent.EXTRA_TEXT, text);
+//                Intent chooser = Intent.createChooser(intent, "Share"); //공유창제목
+//                startActivity(chooser);
             }
         });
 
@@ -249,11 +284,10 @@ public class ConvertedPic extends AppCompatActivity {
         String imageFileName = "AutoBlur_" + timeStamp;
 
         // 이미지가 저장될 폴더
-        File storageDir = new File(Environment.getExternalStorageDirectory() + "/AutoBlur/");
+        storageDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/DCIM/AutoBlur");
         if (!storageDir.exists()) storageDir.mkdirs();
-
-        FileOutputStream out = new FileOutputStream(storageDir+imageFileName+".jpeg");
-
+        FileOutputStream out = new FileOutputStream(storageDir+"/"+imageFileName+".jpeg");
+        Log.e("TAG","out(save): "+out);
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
     }
 }

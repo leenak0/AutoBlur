@@ -48,7 +48,7 @@ public class ScanFace extends Activity implements SurfaceHolder.Callback {
     int i;
     int countFrame=0;
     int finishscan=0;
-    String firebaseurl="gs://autoblur123.appspot.com/";
+    String firebaseurl=**********;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

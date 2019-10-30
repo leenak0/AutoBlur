@@ -26,7 +26,7 @@ public class SelectProfile extends AppCompatActivity {
     ImageView img_scan_face;
     ImageButton btn_go_profile;
     ImageButton btn_cancel_profile;
-    String serverurl="http://52.78.40.106/encode/";
+    String serverurl=**********;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

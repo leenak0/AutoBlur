@@ -37,8 +37,8 @@ public class SelectPic extends AppCompatActivity {
     File uploadFile;
     String imageFileName;
     Uri photoUri;
-    String firebaseurl="************************";
-    String serverurl="************************";
+    String firebaseurl="gs://autoblur123.appspot.com/";
+    String serverurl="http://52.78.40.106/recogination/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

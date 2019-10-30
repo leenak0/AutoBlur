@@ -216,23 +216,6 @@ public class ConvertedPic extends AppCompatActivity {
                 Log.e("TAG","sharePath: "+sharePath);
                 Log.e("TAG","Uri.fromFile(sharePath): "+Uri.fromFile(sharePath));
                 startActivity(Intent.createChooser(share,"Share via"));
-
-//                Intent share = new Intent(Intent.ACTION_SEND);
-//                share.setType("image/*");
-//                share.putExtra(Intent.EXTRA_SUBJECT, "AutoBlur");
-//                share.putExtra(Intent.EXTRA_TEXT, "얼굴인식 자동 모자이크 어플리케이션 AutoBlur입니다.");
-//                share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(img));
-//                startActivity(Intent.createChooser(share,"Share via"));
-
-//                //텍스트공유
-//                Intent intent = new Intent(android.content.Intent.ACTION_SEND);
-//                intent.setType("text/plain");
-//                // Set default text message
-//                // 카톡, 이메일, MMS 다 이걸로 설정 가능
-//                String text = "얼굴인식 자동 모자이크 어플리케이션 AutoBlur"; //보낼문자
-//                intent.putExtra(Intent.EXTRA_TEXT, text);
-//                Intent chooser = Intent.createChooser(intent, "Share"); //공유창제목
-//                startActivity(chooser);
             }
         });
 
